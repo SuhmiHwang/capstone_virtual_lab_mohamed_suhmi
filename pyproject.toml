@@ -12,6 +12,7 @@ dependencies = [
     "rdkit>=2026.9.1",
     "scikit-learn",
     "seaborn",
+    "xgboost>=3.2.0",
 ]
 
 [dependency-groups]
