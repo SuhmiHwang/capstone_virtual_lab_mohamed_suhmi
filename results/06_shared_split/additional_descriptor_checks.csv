@@ -1,0 +1,9 @@
+,missing_count,infinite_count,unique_count,min,max
+FractionCSP3,0,0,510,0.0,1.0
+NumRotatableBonds,0,0,52,0.0,92.0
+NumAliphaticRings,0,0,11,0.0,10.0
+NumSaturatedRings,0,0,10,0.0,10.0
+NumHeteroatoms,0,0,38,2.0,54.0
+LabuteASA,0,0,5296,8.739251027829551,950.1995874282948
+BertzCT,0,0,5773,2.7548875021634682,8056.484946076447
+MolMR,0,0,5543,4.807,615.9180000000018

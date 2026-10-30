@@ -1,0 +1,6 @@
+fold,min_samples_leaf,max_features,max_depth
+1,1,0.6,24
+2,1,0.6,24
+3,2,0.6,24
+4,2,0.6,24
+5,1,0.6,24
