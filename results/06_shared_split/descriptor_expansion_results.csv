@@ -1,0 +1,6 @@
+target,Target property,Previous best model,Previous features,Previous CV MAE,Best model: 21 features,CV MAE: 21 features,MAE reduction (%)
+Tg,Glass transition temperature (Tg),Linear regression,9,58.68832791074495,Random Forest,56.986609542260815,2.8995857082044725
+FFV,Fractional free volume (FFV),Random Forest,13,0.010949702016050927,Random Forest,0.009608330222253084,12.250304088929136
+Tc,Thermal conductivity (Tc),Random Forest,9,0.03852335465288441,XGBoost,0.032419372260950055,15.844887982717056
+Density,Mass density (Density),XGBoost,9,0.05602554907763685,XGBoost,0.04097328574367912,26.8667841400344
+Rg,Radius of gyration (Rg),XGBoost,9,2.6392893446633905,XGBoost,2.555244109275521,3.1843888415572073

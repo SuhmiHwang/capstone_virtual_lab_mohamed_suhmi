@@ -1,0 +1,6 @@
+{
+  "radius":2,
+  "fp_size":1024,
+  "include_chirality":true,
+  "count_simulation":false
+}
