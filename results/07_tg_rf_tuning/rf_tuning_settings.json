@@ -1,0 +1,44 @@
+{
+  "representation": "morgan_plus21",
+  "base_model_parameters": {
+    "bootstrap": true,
+    "ccp_alpha": 0.0,
+    "criterion": "squared_error",
+    "max_depth": null,
+    "max_features": 1.0,
+    "max_leaf_nodes": null,
+    "max_samples": null,
+    "min_impurity_decrease": 0.0,
+    "min_samples_leaf": 1,
+    "min_samples_split": 2,
+    "min_weight_fraction_leaf": 0.0,
+    "monotonic_cst": null,
+    "n_estimators": 200,
+    "n_jobs": 1,
+    "oob_score": false,
+    "random_state": 42,
+    "verbose": 0,
+    "warm_start": false
+  },
+  "configurations": {
+    "rf_reference": {
+      "max_features": 1.0,
+      "min_samples_leaf": 1
+    },
+    "rf_features060": {
+      "max_features": 0.6,
+      "min_samples_leaf": 1
+    },
+    "rf_features030": {
+      "max_features": 0.3,
+      "min_samples_leaf": 1
+    },
+    "rf_features060_leaf2": {
+      "max_features": 0.6,
+      "min_samples_leaf": 2
+    }
+  },
+  "cv": "Existing five random CV folds from notebook 07",
+  "selected_configuration": "rf_features060_leaf2",
+  "outer_validation_used": false
+}
