@@ -1,0 +1,9 @@
+{
+  "method": "Butina",
+  "distance": "1 - Morgan fingerprint Tanimoto similarity",
+  "distance_threshold": 0.6,
+  "reordering": true,
+  "n_structures": 424,
+  "n_clusters": 215,
+  "purpose": "Exploratory analysis of existing OOF errors"
+}
