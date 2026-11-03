@@ -1,0 +1,43 @@
+{
+  "purpose": "Exploratory cluster-grouped robustness check",
+  "target": "Tg",
+  "n_structures": 424,
+  "n_clusters": 215,
+  "clustering_method": "Butina",
+  "cluster_distance_threshold": 0.6,
+  "clustering_reordering": true,
+  "morgan_settings": {
+    "radius": 2,
+    "fp_size": 1024,
+    "include_chirality": true,
+    "count_simulation": false
+  },
+  "cv": "GroupKFold",
+  "n_splits": 5,
+  "shuffle": false,
+  "representations": [
+    "morgan1024",
+    "morgan_plus21"
+  ],
+  "model_parameters": {
+    "bootstrap": true,
+    "ccp_alpha": 0.0,
+    "criterion": "squared_error",
+    "max_depth": null,
+    "max_features": 1.0,
+    "max_leaf_nodes": null,
+    "max_samples": null,
+    "min_impurity_decrease": 0.0,
+    "min_samples_leaf": 1,
+    "min_samples_split": 2,
+    "min_weight_fraction_leaf": 0.0,
+    "monotonic_cst": null,
+    "n_estimators": 200,
+    "n_jobs": 1,
+    "oob_score": false,
+    "random_state": 42,
+    "verbose": 0,
+    "warm_start": false
+  },
+  "outer_validation_used": false
+}
