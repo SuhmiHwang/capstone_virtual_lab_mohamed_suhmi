@@ -1,145 +1,155 @@
-# Data Science Capstone Template
+# Polymind
 
-A ready-made folder structure for your capstone project, so you can start with the data science
-instead of with the setup.
+Predict five polymer properties from a repeat-unit SMILES using a shared
+Python interface and an interactive Streamlit demo.
 
-Everything here already works: you can install it, train an example model, and see a result in
-about five minutes. Then you swap the example out for your own project, step by step.
+**Authors:** Mohamed Elbadry and Suhmi Hwang
 
-New to the tools used here (uv, ruff, pytest, nbdime)? Read
-**[TOOLS.md](TOOLS.md)** first. It explains each one in plain language: what it is, why it is in
-this repo, and what you actually have to type.
+**Dataset:** NeurIPS Open Polymer Prediction 2025
 
-## Getting started
+## Run the demo
 
-You need one thing installed: **uv**. If you do not have it yet, see
-[TOOLS.md](TOOLS.md#uv-the-only-tool-you-install-yourself).
+From the repository root, install the locked project dependencies with uv:
 
-**1. Make your own copy.** On GitHub, click the green **Use this template** button at the top of
-this page. That creates a fresh repository for your team.
-
-**2. Download it to your computer:**
-
-```bash
-git clone git@github.com:<your-org>/<your-repo>.git
-cd <your-repo>
+```powershell
+uv sync --locked --all-groups
 ```
 
-**3. Install everything:**
+Start the app:
 
-```bash
-uv sync --all-groups
+```powershell
+uv run streamlit run app.py
 ```
 
-This one command installs Python (yes, Python itself, if you need it), creates the project's
-virtual environment in a `.venv/` folder, and installs pandas, scikit-learn and the rest. It
-takes a minute the first time.
+Open the Local URL shown in the terminal.
 
-**4. Check it works:**
+1. Enter a polymer repeat-unit SMILES, such as `*CC*` or `*CCO*`.
+2. Click **Predict properties**.
+3. View the structure and the five predictions with their units.
+4. Download the results as CSV.
 
-```bash
-uv run python -m src.train
-```
+The `*` symbols represent polymer attachment points.
+The displayed structure is the represented repeat unit.
 
-You should see a few log lines ending with a trained model and two scores. That is the example
-pipeline running end to end. Now you know your setup is fine.
+The demo loads the saved reference models from `models/polymind_v1/`.
+It does not retrain models and does not require the raw dataset for inference.
+Stop the server with **Ctrl+C** in the terminal.
 
-**5. Open the notebook.** Open the project folder in VS Code, open
-`notebooks/EDA-and-modeling.ipynb`, and when VS Code asks which kernel to use, pick the one from
-`.venv`. That is the environment you just installed.
+## Python interface
 
-## What is in this repo
-
-| Folder or file | What it is for |
-|---|---|
-| `notebooks/` | Your exploration and analysis. `EDA-and-modeling.ipynb` is an empty notebook with the sections already laid out. |
-| `src/` | Python code you want to reuse. See the table below. |
-| `tests/` | Checks that your code in `src/` does what you think. One example is included. |
-| `data/` | Your data files. Git ignores what you put here, so nothing large or private ends up on GitHub. |
-| `models/` | Trained models get saved here. Also ignored by Git. |
-| `images/` | Plots you want to keep, for example for your final presentation. |
-| `pyproject.toml` | The list of packages the project uses. |
-| `Makefile` | Shortcuts for the long commands. `make train` instead of `uv run python -m src.train`. |
-| `TOOLS.md` | Plain-language explanation of every tool in here. |
-| `UV_SETUP.md` | The longer reference for uv, for when you need to add a package or something breaks. |
-
-Inside `src/`:
-
-| File | What it does |
-|---|---|
-| `config.py` | Settings in one place: folder paths, the name of the column you predict, the random seed. Change settings here, not scattered through the code. |
-| `data.py` | Loads your data and splits it into a training set and a test set. |
-| `features.py` | Cleaning and feature engineering. |
-| `train.py` | Trains the model, prints how good it is, saves it to `models/`. |
-| `predict.py` | Loads a saved model and makes predictions on new data. |
-
-## Everyday commands
-
-You can use either column. They do exactly the same thing.
-
-| Short version | Full version | What it does |
-|---|---|---|
-| `make setup` | `uv sync --all-groups` | Install or update the packages |
-| `make train` | `uv run python -m src.train` | Train the model and save it |
-| `make predict` | `uv run python -m src.predict` | Use the saved model to predict |
-| `make test` | `uv run pytest` | Run the tests |
-| `make lint` | `uv run ruff check .` | Point out mistakes and messy code |
-| `make format` | `uv run ruff format .` | Tidy up the code formatting automatically |
-| `make clean` | | Delete temporary files |
-
-`make help` lists them too. `make` is not installed on Windows by default, so if the command is
-not found, just use the full version. It is exactly the same command.
-
-> Why `uv run` in front of everything? Because it guarantees the command uses this project's
-> packages and not some other Python on your computer. You never have to "activate" anything.
-
-## Turning this into your project
-
-The repo ships with a small example (predicting a diabetes progression score from a built-in
-dataset) purely so that everything runs before you have your own data. Replace it in this order,
-and keep running `make train` after each step to see that nothing broke:
-
-**1. Your data.** Open `src/data.py` and change `load_data` so it returns your dataset as a
-DataFrame. Usually one line:
+Run Python from the repository root:
 
 ```python
-return pd.read_csv(DATA_DIR / "my_dataset.csv")
+from src.polymind_predict import predict_polymind
+
+predictions = predict_polymind(["*CC*", "*CCO*"])
+print(predictions)
 ```
 
-Then open `src/config.py` and set `TARGET` to the name of the column you want to predict.
+The function returns a pandas DataFrame with columns
+`Tg`, `FFV`, `Tc`, `Density` and `Rg`.
 
-**2. Your cleaning and features.** Put your cleaning steps into `engineer_features` in
-`src/features.py`. There are two small helpers there to get you going, and you can add your own.
+## Reference models
 
-Why there and not in the notebook? Because `train.py` and `predict.py` both call this one
-function. If you clean your data in the notebook only, your model will be trained on clean data
-and later asked to predict on messy data, and the results will be quietly wrong. This is one of
-the most common ways capstone projects go sideways.
+Each property has a separate model and feature configuration behind the
+common prediction interface.
 
-**3. Your model.** In `src/train.py`, change `build_model` to the model you want (a random
-forest, a classifier, whatever suits your question), and change `evaluate` to metrics that fit.
-The example uses RMSE and R2, which only make sense for predicting a number. If you are
-predicting a category, you want accuracy, precision, recall or F1 instead.
+| Target | Property | Unit | Model | Features |
+|---|---|---|---|---|
+| Tg | Glass transition temperature | °C | Random Forest | Morgan fingerprints + 21 descriptors |
+| FFV | Fractional free volume | dimensionless | Random Forest | Morgan fingerprints |
+| Tc | Thermal conductivity | W/(m·K) | XGBoost | 21 descriptors |
+| Density | Density | g/cm³ | XGBoost | 21 descriptors |
+| Rg | Radius of gyration | Å | Random Forest | Morgan fingerprints |
 
-**4. Your tests.** Add a test to `tests/` for each function you write in `src/features.py`. Copy
-the style of the examples that are already there.
+Morgan fingerprints use 1,024 bits, radius 2 and chirality.
+The saved manifest records feature order, model parameters, training-row
+indices and library versions.
 
-**5. This README.** Delete this section and describe your own project: the question, the data,
-what you found.
+## Validation results
 
-## Working as a team
+The reference experiment uses one shared random 80/20 training–validation
+split with seed 42. Missing target labels are excluded separately for each
+property; they are not replaced with model predictions for this experiment.
 
-- Work on a branch, open a pull request, have a teammate look at it before merging.
-- Use notebooks to explore. As soon as a piece of code is worth running twice, move it into
-  `src/` and import it back into the notebook.
-- If you add a package with `uv add <name>`, commit both `pyproject.toml` and `uv.lock` so
-  everyone gets the same versions.
-- Notebooks cause ugly merge conflicts. [TOOLS.md](TOOLS.md#nbdime-for-notebook-merge-conflicts)
-  explains the tool that fixes that.
+Model selection uses development cross-validation within the training
+partition. Selected configurations were fixed before their holdout evaluation.
+Saved models were fitted on the training partition only.
 
-## Where to look when something breaks
+| Target | Training rows | Validation rows | MAE | RMSE | R² | Median baseline MAE |
+|---|---:|---:|---:|---:|---:|---:|
+| Tg | 424 | 87 | 45.91843 | 58.82817 | 0.66721 | 79.57905 |
+| FFV | 5,611 | 1,419 | 0.00787 | 0.01213 | 0.79593 | 0.01991 |
+| Tc | 592 | 145 | 0.03418 | 0.04888 | 0.69204 | 0.07404 |
+| Density | 490 | 123 | 0.03423 | 0.07449 | 0.71944 | 0.09198 |
+| Rg | 490 | 124 | 1.84297 | 2.81449 | 0.67466 | 4.11703 |
 
-- Setup and package problems: [UV_SETUP.md](UV_SETUP.md#7-troubleshooting)
-- "What even is this tool": [TOOLS.md](TOOLS.md)
-- [scikit-learn user guide](https://scikit-learn.org/stable/user_guide.html) for the modeling
-- [pandas documentation](https://pandas.pydata.org/docs/) for the data wrangling
+MAE, RMSE and baseline MAE use each target's unit listed above.
+R² is dimensionless. Lower MAE and RMSE are better.
+The baseline predicts the median of the corresponding training labels.
+
+### Tg development findings
+
+- Adding 21 descriptors to Morgan fingerprints reduced mean five-fold
+  random-CV MAE from 56.04 to 53.88 °C.
+- Targeted Random Forest tuning further reduced mean CV MAE to 53.14 °C.
+- In an exploratory cluster-grouped comparison, Morgan + 21 descriptors
+  achieved 54.37 °C mean MAE versus 56.36 °C for Morgan alone.
+- These CV comparisons are development results, separate from the holdout
+  metrics above.
+
+## Checks performed
+
+- Feature compatibility was verified for all 424 Tg training structures.
+- Saved models reproduced the recorded holdout predictions for all five targets.
+- Module predictions matched notebook predictions and also worked in a
+  separate Python process.
+- Empty input and empty-SMILES checks passed for the prediction interface.
+- The demo was manually checked with `*CC*`, `*CCO*`, invalid SMILES and CSV export.
+- Python compilation and Ruff checks passed for the demo.
+
+## Limitations and ongoing experiments
+
+Predictions are model estimates, not experimental measurements.
+Large individual errors remain, and results concern one shared random holdout.
+Performance on unfamiliar polymer families has not been established.
+
+
+The inputs describe the represented repeat unit. They do not explicitly
+provide processing conditions, chain molecular weight or formulation details.
+
+The existing holdout has already been examined and must not guide further
+model selection or tuning.
+
+Additional descriptors, Uni-Mol features and external Tg data are separate
+experiments and are not included in this reference bundle. Changes to feature
+representations require the corresponding feature calculation and trained
+model to be integrated together.
+
+## Key project files
+
+| Path | Purpose |
+|---|---|
+| `app.py` | Streamlit demo |
+| `src/polymind_predict.py` | Feature calculation and five-property prediction interface |
+| `src/descriptors.py` | Shared descriptor implementation |
+| `models/polymind_v1/` | Five saved reference models and manifest |
+| `notebooks/06_mohamed_shared_split_and_representations.ipynb` | Shared split and representation comparisons |
+| `notebooks/07_mohamed_tg_error_analysis.ipynb` | Tg analysis, model comparisons and integration checks |
+| `results/07_tg_validation/` | Fixed Tg candidate holdout results |
+| `results/08_selected_model_validation/` | Recorded validation results for all five targets |
+| `pyproject.toml` and `uv.lock` | Project dependencies and locked environment |
+
+## Development
+
+```powershell
+uv run pytest
+uv run ruff check app.py
+uv run ruff format --check app.py
+```
+
+Use a separate branch and pull request for changes. Commit both
+`pyproject.toml` and `uv.lock` when updating dependencies.
+
+For tooling and environment help, see [TOOLS.md](TOOLS.md) and
+[UV_SETUP.md](UV_SETUP.md).
