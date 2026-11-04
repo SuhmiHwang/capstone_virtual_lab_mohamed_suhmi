@@ -1,0 +1,18 @@
+{
+  "default_xgb": {
+    "n_estimators": 500,
+    "learning_rate": 0.05,
+    "max_depth": 4,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8
+  },
+  "suhmi_candidate21": {
+    "colsample_bytree": 0.7669644012595116,
+    "learning_rate": 0.019452208847287395,
+    "max_depth": 4,
+    "min_child_weight": 10,
+    "n_estimators": 883,
+    "reg_lambda": 0.307787547057142,
+    "subsample": 0.6673164168691722
+  }
+}
