@@ -1,0 +1,36 @@
+{
+  "python": "3.13.14",
+  "versions": {
+    "rdkit": "2026.9.1",
+    "xgboost": "3.4.1",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "pandas": "3.0.5"
+  },
+  "input_sha256": {
+    "train": "1f79c85c785698e8c3499d99721adfe3be9660a487f137a923dd34eb7ef845e1",
+    "external": "c112cee65d8c819da1a0f5c2ad1ed9be29b5f8dec63dec454f17090f3cf757d1",
+    "shape": "703337dd4c584392bd263e0afc1c1070fd392596f50bce21b813ddb3bb353779"
+  },
+  "source_sha256": {
+    "compare_tg_shared.py": "ecc54b814e0143dea52f3b3e7698548375047fa7c159fb19d073eaeea19fe9fb",
+    "descriptors_reference.py": "b78d3cd5d99ea9c27b5e3d2dff84cd2528d4ac2d9030a2a1a293576f5ec06306",
+    "polymer_features_suhmi.py": "c5bd4fb390e3224d979fc5dc1d5a61e0983e684b3dc1f6c49a03bcdc5537915c"
+  },
+  "training_rows": 424,
+  "outer_tg_rows_not_scored": 87,
+  "original_external_pool": 7194,
+  "external_eligible_before_cv": 7167,
+  "similarity_threshold": 0.95,
+  "external_weight": 0.5,
+  "elapsed_seconds": 216.62843108177185,
+  "limitations": [
+    "Exploratory comparison, not independent validation: candidate parameters previously selected on overlapping training data.",
+    "External input is the supplied 7194-row pool, already filtered using Suhmis different split; original 7225-row pool not rebuilt.",
+    "Additional exact/all-labelled and near/evaluation-fold exclusions differ from Suhmis published CV protocol.",
+    "RDKit canonical SMILES plus achiral Morgan similarity do not guarantee polymer-repeat-boundary equivalence.",
+    "Shape cache alignment verified by row indices; source cache lacks per-row SMILES checksums.",
+    "No holdout scores generated, no fitted models exported, no reference/demo files modified."
+  ]
+}
